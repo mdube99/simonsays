@@ -2,6 +2,7 @@ import time
 import random
 import RPi.GPIO as GPIO
 import LEDRGB as LED
+from getpass import getpass
 
 R_pin = 11
 G_pin = 12
@@ -23,6 +24,14 @@ clist = []
 # clist is definited as an empty list to append the colors into it from the 'colors' list
 # this script appends a value to a list
 
+def validate_guess(color_sequence_string, uinput):
+	if color_sequence_string ==  uinput:
+		print "your guess is correct"
+	else:
+		print "Your guess is incorrect"
+		LED.destroy()
+		Buzz.stop()
+		exit()	
 
 def loop():
 	n = random.randint(0,3)
@@ -37,10 +46,11 @@ def loop():
 			Buzz.stop()
 			LED.noColor()
 			time.sleep(0.5)
-			print colors[i]
+		uinput = getpass ("What is the next color in the sequence?")
+		color_sequence_string = ''.join(clist)
+		validate_guess(color_sequence_string, uinput.upper())
 		clist.append(colors[n])
 		
-
 def append_list():
 	clist.append(clist[crand])
 	color_string = ''.join(clist)
@@ -50,5 +60,6 @@ if __name__ == '__main__':
 		loop()
 	except KeyboardInterrupt:
 		LED.destroy()
+		Buzz.stop()
 		print "\n LED Turned off."
 
