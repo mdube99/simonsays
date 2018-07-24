@@ -11,13 +11,11 @@ LED.setup(R_pin, G_pin, B_pin)
 colors = ['R', 'G', 'B', 'Y']
 # this script appends a value to a list
 
-trand = random.randint(1,3) - .5
-
 def loop():
 	while True:
 		crand = random.randint(0,3)
 		LED.setColor(colors[crand])
-		time.sleep(trand)
+		time.sleep(0.5)
 		LED.noColor()
 
 if __name__ == '__main__':
