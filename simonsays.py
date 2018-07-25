@@ -21,26 +21,30 @@ Buzz = GPIO.PWM(buzz_pin,1000)
 frequencies = [220, 440, 880, 1760]
 colors = ['R', 'G', 'B', 'Y']
 clist = []
+freq_seq = []
+
 # clist is definited as an empty list to append the colors into it from the 'colors' list
 # this script appends a value to a list
 
 def validate_guess(color_sequence_string, uinput):
 	if color_sequence_string ==  uinput:
-		print "your guess is correct"
+		print "Correct guess", color_sequence_string
+		print uinput
 	else:
-		print "Your guess is incorrect"
+		print "Your guess is incorrect", color_sequence_string
 		LED.destroy()
 		Buzz.stop()
-		exit()	
+		exit()
 
 def loop():
 	n = random.randint(0,3)
 	clist.append(colors[n])
+	freq_seq.append(frequencies[n])
 	while True:
 		for i in range(0, len(clist)):
 			# for loop to get the range 0 then to the clist (list that gets appended with the colors)
-			LED.setColor(colors[i])
-			Buzz.ChangeFrequency(frequencies[i])
+			LED.setColor(clist[i])
+			Buzz.ChangeFrequency(freq_seq[i])
 			Buzz.start(50)
 			time.sleep(0.5)
 			Buzz.stop()
@@ -49,7 +53,9 @@ def loop():
 		uinput = getpass ("What is the next color in the sequence?")
 		color_sequence_string = ''.join(clist)
 		validate_guess(color_sequence_string, uinput.upper())
+		n = random.randint(0,3)
 		clist.append(colors[n])
+		freq_seq.append(frequencies[n])
 		
 def append_list():
 	clist.append(clist[crand])
